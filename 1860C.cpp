@@ -1,6 +1,6 @@
-// Problem: C. Ntarsis' Set
-// Contest: Codeforces - Codeforces Round 887 (Div. 2)
-// URL: https://codeforces.com/contest/1853/problem/C
+// Problem: C. Game on Permutation
+// Contest: Codeforces - Educational Codeforces Round 153 (Rated for Div. 2)
+// URL: https://codeforces.com/contest/1860/problem/C
 // Memory Limit: 256 MB
 // Time Limit: 2000 ms
 // 
@@ -13,6 +13,12 @@
 using namespace std;
 
 //Findout buggs:
+
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+  
+#define ordered_set tree<ll, null_type,less<ll>, rb_tree_tag,tree_order_statistics_node_update>
 
 #define BUG
 
@@ -49,37 +55,22 @@ int32_t main(){
 	cin >> t;
 	
 	while(t--){
-		ll n, k;
-		cin >> n >> k;
-		
-		vector<ll> a(n + 1, 0), c(n + 1, 0);
-		
-		for(ll i = 1; i <= n; i++){
+		ll n;
+		cin >> n;
+		ll a[n];
+		ll mn = n + 1, ans = 0, v = n + 1;
+		for(ll i = 0; i < n; i++){
 			cin >> a[i];
-			c[i] = c[i - 1] + (a[i] - a[i - 1] - 1);
-		}
-		
-		
-		ll lo = 1, hi = 1e18, mid = 0, ans = 0;
-		
-		while(lo <= hi){
-			mid = (lo + hi) >> 1;
-			ll ex = mid, val = 0;
-					
-			for(ll i = 1, j = n; i <= k; i++){
-				while(a[j] > ex) j--;
-				val = a[j] - c[j];
-				ex -= val;
-				
-				if(ex < 0) break;
+			if(!i){
+				mn = a[i];
+				continue;
 			}
-			if(ex > 0){
-				if(ex == 1){
-					ans = mid;
-				}
-				hi = mid - 1;
-			}
-			else lo = mid + 1;
+			
+			if(mn < a[i]){
+				if(v > a[i]) ans++;
+				v = min(a[i], v);
+			}	
+			mn = min(mn, a[i]);		
 		}
 		cout << ans << '\n';
 		
